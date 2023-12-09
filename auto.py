@@ -4,6 +4,8 @@ import numpy as np
 import os
 import pyautogui
 import time
+import keyboard
+
 
 
 def find_image_on_screen(template_path, threshold=0.9):
@@ -29,7 +31,8 @@ def find_image_on_screen(template_path, threshold=0.9):
         center_y = loc[1] + h // 2
         centers.append((center_x, center_y))
 
-    return centers[1::2]
+    # return centers[1::2]
+    return centers
 
 def auto_click_on_centers(centers):
     for center in centers:
@@ -44,8 +47,12 @@ def auto_click_on_centers(centers):
 # Example usage
 folder_path = 'C:\\Users\\User2\\Desktop\\Py\\Auto add friends\\image'
 image_files = [f for f in os.listdir(folder_path) if f.endswith(('.png', '.jpg', '.jpeg'))]
+countNotFound = 0
 
 def auto_click_add():
+
+    global countNotFound  # Declare countNotFound as global
+
     for image_file in image_files:
         image_path = os.path.join(folder_path, image_file)
         centers = find_image_on_screen(image_path)
@@ -55,6 +62,14 @@ def auto_click_add():
             auto_click_on_centers(centers)
         else:
             print(f"Image '{image_file}' not found.")
+            countNotFound += 1
+            print(countNotFound)
+            if countNotFound > 4:
+                keyboard.press_and_release('ctrl+w')
+                time.sleep(1)
+                countNotFound = 0
+
+
 
 def detect_image(template_path, threshold=0.9):
     # Load the template image
