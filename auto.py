@@ -8,7 +8,7 @@ import keyboard
 
 
 
-def find_image_on_screen(template_path, threshold=0.9):
+def find_image_on_screen(template_path, threshold=0.88):
     # Load the template image
     template = cv2.imread(template_path, 0)
 
@@ -31,7 +31,7 @@ def find_image_on_screen(template_path, threshold=0.9):
         center_y = loc[1] + h // 2
         centers.append((center_x, center_y))
 
-    # return centers[1::2]
+    #return centers[1::2]
     return centers
 
 def auto_click_on_centers(centers):
@@ -42,10 +42,10 @@ def auto_click_on_centers(centers):
         # Click at the center position
         pyautogui.click()
 
-        time.sleep(random.choice([0.2,0.3,0.4,0.5]))
+        time.sleep(random.choice([0.15]))
 
 # Example usage
-folder_path = 'C:\\Users\\User2\\Desktop\\Py\\Auto add friends\\image'
+folder_path = 'C:\\Users\\qqee\\Desktop\\AutoAddFrsFb\\image'
 image_files = [f for f in os.listdir(folder_path) if f.endswith(('.png', '.jpg', '.jpeg'))]
 countNotFound = 0
 
@@ -64,14 +64,14 @@ def auto_click_add():
             print(f"Image '{image_file}' not found.")
             countNotFound += 1
             print(countNotFound)
-            if countNotFound > 4:
+            if countNotFound > 8:
                 keyboard.press_and_release('ctrl+w')
                 time.sleep(1)
                 countNotFound = 0
 
 
 
-def detect_image(template_path, threshold=0.9):
+def detect_image(template_path, threshold=0.88):
     # Load the template image
     template = cv2.imread(template_path, 0)
 
@@ -98,7 +98,7 @@ def detect_image(template_path, threshold=0.9):
 
 def detect_ok_btn():
     # Example usage
-    template_path = 'C:\\Users\\User2\\Desktop\\Py\\Auto add friends\\ok.png'
+    template_path = 'C:\\Users\\qqee\\Desktop\\AutoAddFrsFb\\ok.png'
     is_image_found, image_positions = detect_image(template_path)
 
     if is_image_found:
@@ -114,7 +114,18 @@ def detect_ok_btn():
         time.sleep(0.8)
         auto_click_add()
 
+def detect_x_btn():
+    # Example usage
+    template_path = 'C:\\Users\\qqee\\Desktop\\AutoAddFrsFb\\2.png'
+    is_image_found, image_positions = detect_image(template_path)
+
+    if is_image_found:
+        print(f"X Button: {image_positions}")
+        pyautogui.moveTo(image_positions[0], image_positions[1])
+        pyautogui.click()
+ 
     
 while True:
     detect_ok_btn()
-    time.sleep(5)
+    detect_x_btn()
+    time.sleep(2.5)
